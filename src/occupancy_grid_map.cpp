@@ -4,11 +4,16 @@
 
 OGMap::OGMap(float resolution, int height_x, int length_y, int start[],
              std::shared_ptr<ros::NodeHandle> nh_ptr)
-    : nh_ptr_(nh_ptr) {
+    : nh_ptr_(nh_ptr),is_goal_active(false) {
   logger_ = spdlog::get("graph_planning")->clone("occupancy_grid_map_node");
 
   map_publisher =
         nh_ptr_->advertise<nav_msgs::GridCells>("/graph_planning_map", 1);
+  goal_publisher =
+        nh_ptr_->advertise<nav_msgs::GridCells>("/graph_planning_goal", 1);
+  goal_sub =
+      nh_ptr_->subscribe("/move_base_simple/goal", 1, &OGMap::GoalCallback, this);
+    
 
   // Initialise the map as free
   CellValue free_value = CellValue_::FREE;
@@ -67,5 +72,62 @@ void OGMap::visualise_map() {
 
     map_publisher.publish(grid_cells);
     logger_->debug("Published new map state!");
+
+}
+
+void OGMap::GoalCallback(const geometry_msgs::PoseStamped &goal_msg){
+
+    // Reject Goal if it is already active
+    if(!is_goal_active)
+    {
+        
+        GridCell* temp_cell = GetCell(goal_msg.pose.position.x,goal_msg.pose.position.y);
+        if(temp_cell->value==CellValue::FREE)
+            {
+                temp_cell->isGoal = true;
+                is_goal_active = true;
+
+                // Visualise Goal on map
+                nav_msgs::GridCells grid_cells = nav_msgs::GridCells();
+                grid_cells.cell_width = 1;
+                grid_cells.cell_height = 1;
+                grid_cells.header.stamp = ros::Time::now();
+                grid_cells.header.frame_id = "map";
+
+                geometry_msgs::Point grid_cell_point = geometry_msgs::Point();
+                grid_cell_point.x = temp_cell->location[0];
+                grid_cell_point.y = temp_cell->location[1];
+                grid_cell_point.z = 0.0f;
+                grid_cells.cells.push_back(grid_cell_point);
+                goal_publisher.publish(grid_cells);
+                logger_->info("Got new goal!");
+
+            }
+        else{
+            logger_->info("Goal Rejected!!");
+        }
+
+    }
+
+    
+}
+
+OGMap::GridCell *OGMap::GetCell(float x, float y){
+
+    // Define a border cell
+    GridCell border_cell;
+    border_cell.value = CellValue::OCCUPIED;
+    border_cell.isExplored = true;
+
+    // Check if this Cell is within dimensions of the map
+    if(int(x)>Origin[0]+GridDim[0] || int(x)<Origin[0])
+        return &border_cell;
+
+     if(int(y)>Origin[1]+GridDim[1] || int(y)<Origin[1])
+        return &border_cell;
+
+    
+    return &Map[int(x)][int(y)];
+
 
 }
