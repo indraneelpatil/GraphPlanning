@@ -13,3 +13,4 @@ Global planning for robotics based on graph search technique
 - [ ] Neptune
 - [ ] Comet Haley
 
+Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
