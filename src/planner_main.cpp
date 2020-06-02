@@ -8,7 +8,8 @@
 
 #include <ros/ros.h>
 
-#include <occupancy_grid_map.hpp>
+#include "occupancy_grid_map.hpp"
+#include "breadth_first_search.cpp"
 
 #include <chrono>
 #include <csignal>
@@ -55,9 +56,12 @@ int main(int argc, char **argv) {
   float start_point[2];
   start_point[0] = 0.0f;
   start_point[1] = 0.0f;
-  OGMap grid_map(1, 10, 10, start_point,nh_ptr);
+  OGMap grid_map(1, 10, 10, start_point,nh_ptr);   // resolution,height.length, start, nh_ptr
 
   logger->info("Occupancy Grid map created!");
+
+  // Create Planner
+  BFS planner(start_point,grid_map);
 
   //ros::AsyncSpinner spinner(1);
   //spinner.start();

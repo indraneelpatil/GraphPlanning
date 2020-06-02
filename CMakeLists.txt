@@ -53,6 +53,19 @@ target_link_libraries(occupancy_grid_map
                 ${catkin_LIBRARIES}
                 )
 
+add_library(planners SHARED
+src/breadth_first_search.cpp
+)
+
+
+set_target_properties(planners PROPERTIES LINKER_LANGUAGE CXX)
+
+target_link_libraries(planners
+        ${CMAKE_THREAD_LIBS_INIT}
+        spdlog
+        ${catkin_LIBRARIES}
+        )
+
 add_executable(planner_main src/planner_main.cpp)
 target_link_libraries(planner_main 
                         occupancy_grid_map

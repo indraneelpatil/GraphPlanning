@@ -35,6 +35,8 @@ public:
     bool isExplored;
     bool isFrontier;
     float location[2];
+    int parent_index[2];
+    int index[2];
 
   } GridCell;
 
@@ -48,12 +50,13 @@ public:
   GridCell *GetCellbyIndex(int x, int y);
   GridCell *GetCellbyPose(float x, float y);
   void GoalCallback(const geometry_msgs::PoseStamped &goal_msg);
+  
+  bool is_goal_active;
 
 private:
   
   float Origin[2];
   int GridDim[2];
-  bool is_goal_active;
   GridCell border_cell;
 
   std::shared_ptr<spdlog::logger> logger_;
