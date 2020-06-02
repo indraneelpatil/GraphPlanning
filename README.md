@@ -10,7 +10,7 @@ Global planning for robotics based on graph search technique
     - [x] Update the Map object with the new goal (wipe off any old goals as well)
 + Breadth First Search Planner
     - [X] Write Motion Model
-    - [X] Wait to received goal
+    - [X] Planning thread wait to receive goal
     - [ ] Iterate until goal cell is found
     - [ ] Build final path
     - [ ] Visualise frontier, explored nodes and final path
