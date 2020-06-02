@@ -8,7 +8,12 @@ Global planning for robotics based on graph search technique
     - [x] Round up the goal to cell of the map
     - [x] Visualise the goal in rviz
     - [x] Update the Map object with the new goal (wipe off any old goals as well)
-    - [ ] Saturn
++ Breadth First Search Planner
+    - [X] Write Motion Model
+    - [X] Planning thread wait to receive goal
+    - [ ] Iterate until goal cell is found
+    - [ ] Build final path
+    - [ ] Visualise frontier, explored nodes and final path
     - [ ] Uranus
     - [ ] Neptune
     - [ ] Comet Haley
