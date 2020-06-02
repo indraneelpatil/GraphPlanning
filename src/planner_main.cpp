@@ -52,9 +52,9 @@ int main(int argc, char **argv) {
 
   logger->info("initializing graph_planning test!");
 
-  int start_point[2];
-  start_point[0] = 0;
-  start_point[1] = 0;
+  float start_point[2];
+  start_point[0] = 0.0f;
+  start_point[1] = 0.0f;
   OGMap grid_map(1, 10, 10, start_point,nh_ptr);
 
   logger->info("Occupancy Grid map created!");

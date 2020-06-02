@@ -16,7 +16,7 @@
 class OGMap {
 
 public:
-  OGMap(float resolution, int height, int length, int start[],
+  OGMap(float resolution, int height, int length, float start[],
         std::shared_ptr<ros::NodeHandle> nh_ptr);
 
   ~OGMap(){};
@@ -45,7 +45,8 @@ public:
   void addObstacle(int x, int y);
   void visualise_map();
 
-  GridCell *GetCell(float x, float y);
+  GridCell *GetCellbyIndex(int x, int y);
+  GridCell *GetCellbyPose(float x, float y);
   void GoalCallback(const geometry_msgs::PoseStamped &goal_msg);
 
 private:
@@ -53,6 +54,7 @@ private:
   float Origin[2];
   int GridDim[2];
   bool is_goal_active;
+  GridCell border_cell;
 
   std::shared_ptr<spdlog::logger> logger_;
   std::shared_ptr<ros::NodeHandle> nh_ptr_;

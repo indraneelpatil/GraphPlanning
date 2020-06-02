@@ -2,7 +2,7 @@
 
 #include "occupancy_grid_map.hpp"
 
-OGMap::OGMap(float resolution, int height_x, int length_y, int start[],
+OGMap::OGMap(float resolution, int height_x, int length_y, float start[],
              std::shared_ptr<ros::NodeHandle> nh_ptr)
     : nh_ptr_(nh_ptr),is_goal_active(false) {
   logger_ = spdlog::get("graph_planning")->clone("occupancy_grid_map_node");
@@ -25,9 +25,9 @@ OGMap::OGMap(float resolution, int height_x, int length_y, int start[],
   cell.isFrontier = false;
   cell.isGoal = false;
 
-  // Find origin of map
-  Origin[0] = (start[0] - height_x / 2);
-  Origin[1] = (start[1] - length_y / 2);
+  // Find origin of map (Centre of map is start point)
+  Origin[0] = start[0] - height_x / 2.0f;
+  Origin[1] = start[1] - length_y / 2.0f;
 
   logger_->info("Origin of map is {},{}", Origin[0], Origin[1]);
 
@@ -43,6 +43,10 @@ OGMap::OGMap(float resolution, int height_x, int length_y, int start[],
 
   GridDim[0] = height_x;
   GridDim[1] = length_y;
+
+// Define a border cell
+border_cell.value = CellValue::OCCUPIED;
+border_cell.isExplored = true;
   
   usleep(1000000);
   visualise_map();
@@ -51,8 +55,8 @@ OGMap::OGMap(float resolution, int height_x, int length_y, int start[],
 void OGMap::visualise_map() {
 
     nav_msgs::GridCells grid_cells = nav_msgs::GridCells();
-    grid_cells.cell_width = 1;
-    grid_cells.cell_height = 1;
+    grid_cells.cell_width = 1.0f;
+    grid_cells.cell_height = 1.0f;
     grid_cells.header.stamp = ros::Time::now();
     grid_cells.header.frame_id = "map";
 
@@ -81,7 +85,7 @@ void OGMap::GoalCallback(const geometry_msgs::PoseStamped &goal_msg){
     if(!is_goal_active)
     {
         
-        GridCell* temp_cell = GetCell(goal_msg.pose.position.x,goal_msg.pose.position.y);
+        GridCell* temp_cell = GetCellbyPose(goal_msg.pose.position.x,goal_msg.pose.position.y);
         if(temp_cell->value==CellValue::FREE)
             {
                 temp_cell->isGoal = true;
@@ -109,25 +113,53 @@ void OGMap::GoalCallback(const geometry_msgs::PoseStamped &goal_msg){
 
     }
 
-    
+    is_goal_active = false;
 }
 
-OGMap::GridCell *OGMap::GetCell(float x, float y){
+OGMap::GridCell *OGMap::GetCellbyIndex(int x, int y){
 
-    // Define a border cell
-    GridCell border_cell;
-    border_cell.value = CellValue::OCCUPIED;
-    border_cell.isExplored = true;
 
     // Check if this Cell is within dimensions of the map
-    if(int(x)>Origin[0]+GridDim[0] || int(x)<Origin[0])
+    if(x>GridDim[0]-1 || x<0)
         return &border_cell;
 
-     if(int(y)>Origin[1]+GridDim[1] || int(y)<Origin[1])
+    if(y>GridDim[1]-1 || y<0)
         return &border_cell;
 
     
-    return &Map[int(x)][int(y)];
+    return &Map[(x)][(y)];
+
+
+}
+
+OGMap::GridCell *OGMap::GetCellbyPose(float x, float y){
+
+
+    // Check if this Cell is within dimensions of the map
+    if(x>Origin[0]+GridDim[0] || x<Origin[0])
+        return &border_cell;
+
+     if(y>Origin[1]+GridDim[1] || y<Origin[1])
+        return &border_cell;
+
+    float min_dist = 100.0f;
+    GridCell* return_cell;
+    // Find cell using Euclidean distance
+     for(int i=0;i<GridDim[0];i++)
+    {
+        for(int j=0;j<GridDim[1];j++)
+        {
+            float dist = pow( pow(Map[i][j].location[0]-x,2) + pow(Map[i][j].location[1]-y,2) ,0.5);
+            if(dist<min_dist)
+                {
+                    min_dist = dist;
+                    return_cell = &Map[i][j];
+                }
+        }
+
+    }
+    
+    return return_cell;
 
 
 }
