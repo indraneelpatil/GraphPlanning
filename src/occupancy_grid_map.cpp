@@ -25,9 +25,27 @@ OGMap::OGMap(float resolution, int height_x, int length_y, float start[],
   cell.isGoal = false;
 
   // Find origin of map (Centre of map is start point)
-  Origin[0] = start[0] - height_x / 2.0f;
-  Origin[1] = start[1] - length_y / 2.0f;
+  if (height_x % 2 == 0) {
+    Origin[0] = start[0] - resolution * ((height_x / 2) - 1);
+    start_index[0] = (height_x / 2) - 1;
 
+  } else {
+    Origin[0] = start[0] - resolution * ((height_x - 1) / 2);
+    start_index[0] = (height_x - 1) / 2;
+  }
+
+  if (length_y % 2 == 0) {
+    Origin[1] = start[1] - resolution * ((length_y / 2) - 1);
+    start_index[1] = (length_y / 2) - 1;
+
+  } else {
+    Origin[1] = start[1] - resolution * ((length_y - 1) / 2);
+    start_index[1] = (length_y - 1) / 2;
+  }
+
+  // Origin[0] = start[0] - height_x / 2.0f;
+  // Origin[1] = start[1] - length_y / 2.0f;
+  logger_->info("Start Index of map is {},{}", start_index[0], start_index[1]);
   logger_->info("Origin of map is {},{}", Origin[0], Origin[1]);
 
   for (int i = 0; i < height_x; i++) {
@@ -85,7 +103,11 @@ void OGMap::GoalCallback(const geometry_msgs::PoseStamped &goal_msg) {
         GetCellbyPose(goal_msg.pose.position.x, goal_msg.pose.position.y);
     if (temp_cell->value == CellValue::FREE) {
       temp_cell->isGoal = true;
+      temp_cell->parent_index[0] = -1; // End of Queue marker
+      temp_cell->parent_index[1] = -1;
       is_goal_active = true;
+      GoalCell[0] = temp_cell->location[0];
+      GoalCell[1] = temp_cell->location[1];
 
       // Visualise Goal on map
       nav_msgs::GridCells grid_cells = nav_msgs::GridCells();
@@ -105,9 +127,8 @@ void OGMap::GoalCallback(const geometry_msgs::PoseStamped &goal_msg) {
     } else {
       logger_->info("Infeasible Goal Rejected!!");
     }
-  }
-  else {
-      logger_->info("Goal Already active !!");
+  } else {
+    logger_->info("Goal Already active !!");
   }
 }
 

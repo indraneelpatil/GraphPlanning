@@ -43,7 +43,6 @@ public:
   std::vector<std::vector<GridCell>> Map;
 
   void setStartOnGrid(int x, int y);
-  void addGoal(int x, int y);
   void addObstacle(int x, int y);
   void visualise_map();
 
@@ -52,6 +51,8 @@ public:
   void GoalCallback(const geometry_msgs::PoseStamped &goal_msg);
   
   bool is_goal_active;
+  int GoalCell[2];
+  int start_index[2];
 
 private:
   

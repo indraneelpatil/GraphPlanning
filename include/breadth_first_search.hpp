@@ -8,32 +8,32 @@
 
 #include <spdlog/spdlog.h>
 
-#include <ros/ros.h>
-#include <nav_msgs/GridCells.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <nav_msgs/GridCells.h>
+#include <ros/ros.h>
 
 #include "occupancy_grid_map.hpp"
 
 class BFS {
 
 public:
-    BFS(float start[], OGMap &OGMap);
+  BFS(float start[], OGMap &OGMap);
 
-    ~BFS();
+  ~BFS();
 
-    void RunPlanner();
-
-
+  void RunPlanner();
 
 private:
-    std::vector<std::vector<int>> motion_model;
-    std::shared_ptr<spdlog::logger> logger_;
-    OGMap &Map;
-    std::condition_variable goal_cv;
-    std::mutex goal_mutex_;
-    bool planner_alive;
-    std::thread planner_thread_;
+  std::vector<std::vector<int>> motion_model;
+  std::shared_ptr<spdlog::logger> logger_;
+  OGMap &MapObj;
+  std::condition_variable goal_cv;
+  std::mutex goal_mutex_;
+
+  bool planner_alive;
+  std::thread planner_thread_;
+  std::vector<std::vector<int>> search_queue;
 };
 
 #endif
