@@ -12,7 +12,7 @@ Global planning for robotics based on graph search technique
     - [X] Write Motion Model
     - [X] Planning thread wait to receive goal
     - [X] Iterate until goal cell is found
-    - [ ] Build final path
+    - [X] Build final path
     - [ ] Visualise frontier, explored nodes and final path
     - [ ] Uranus
     - [ ] Neptune
