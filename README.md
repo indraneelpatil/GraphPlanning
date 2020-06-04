@@ -14,7 +14,7 @@ Global planning for robotics based on graph search technique
     - [X] Iterate until goal cell is found
     - [X] Build final path
     - [X] Visualise frontier, explored nodes and final path
-    - [ ] Uranus
+    - [ ] Add progress indicator during planning and performance metrics
     - [ ] Neptune
     - [ ] Comet Haley
 
