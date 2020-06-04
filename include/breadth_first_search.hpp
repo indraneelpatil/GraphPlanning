@@ -23,6 +23,7 @@ public:
   ~BFS();
 
   void RunPlanner();
+  void BuildPathFromQueue();
 
 private:
   std::vector<std::vector<int>> motion_model;

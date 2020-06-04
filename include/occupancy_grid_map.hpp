@@ -34,6 +34,7 @@ public:
     bool isGoal;
     bool isExplored;
     bool isFrontier;
+    bool isOnPlannerPath;
     float location[2];
     int parent_index[2];
     int index[2];
