@@ -13,7 +13,7 @@ Global planning for robotics based on graph search technique
     - [X] Planning thread wait to receive goal
     - [X] Iterate until goal cell is found
     - [X] Build final path
-    - [ ] Visualise frontier, explored nodes and final path
+    - [X] Visualise frontier, explored nodes and final path
     - [ ] Uranus
     - [ ] Neptune
     - [ ] Comet Haley
