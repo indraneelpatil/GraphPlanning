@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
   logger->info("Occupancy Grid map created!");
 
   // Create Planner
-  BFS planner(start_point,grid_map);
+  BFS planner(grid_map);
 
   //ros::AsyncSpinner spinner(1);
   //spinner.start();

@@ -103,8 +103,6 @@ void OGMap::GoalCallback(const geometry_msgs::PoseStamped &goal_msg) {
         GetCellbyPose(goal_msg.pose.position.x, goal_msg.pose.position.y);
     if (temp_cell->value == CellValue::FREE) {
       temp_cell->isGoal = true;
-      temp_cell->parent_index[0] = -1; // End of Queue marker
-      temp_cell->parent_index[1] = -1;
       is_goal_active = true;
       GoalCell[0] = temp_cell->location[0];
       GoalCell[1] = temp_cell->location[1];

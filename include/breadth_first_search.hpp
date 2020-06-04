@@ -18,12 +18,13 @@
 class BFS {
 
 public:
-  BFS(float start[], OGMap &OGMap);
+  BFS(OGMap &OGMap);
 
   ~BFS();
 
   void RunPlanner();
   void BuildPathFromQueue();
+  std::vector<std::vector<int>> feasible_path_coordinates;
 
 private:
   std::vector<std::vector<int>> motion_model;

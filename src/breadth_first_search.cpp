@@ -1,6 +1,6 @@
 #include "breadth_first_search.hpp"
 
-BFS::BFS(float start[], OGMap &OGMap) : MapObj(OGMap), planner_alive(true) {
+BFS::BFS(OGMap &OGMap) : MapObj(OGMap), planner_alive(true) {
 
   logger_ = spdlog::get("graph_planning")->clone("bfs_node");
 
@@ -39,6 +39,9 @@ void BFS::RunPlanner() {
 
       //Mark start as a frontier
       MapObj.Map[search_queue[queue_it][0]][search_queue[queue_it][1]].isFrontier = true;
+      // End of queue marker
+      MapObj.Map[search_queue[queue_it][0]][search_queue[queue_it][1]].parent_index[0] = -1;
+      MapObj.Map[search_queue[queue_it][0]][search_queue[queue_it][1]].parent_index[1] = -1;
       /*******/
       while(1){
 
@@ -80,16 +83,16 @@ void BFS::RunPlanner() {
 
            }
 
-           if(queue_it > search_queue.size()-1)
-            {
-                logger_->error("Run out of grid nodes to search!");
-                break;
-            }
-
               if(current_cell->isGoal)
             {
                 BuildPathFromQueue();
                 /***********/
+                break;
+            }
+
+             if(queue_it > search_queue.size()-1)
+            {
+                logger_->error("Run out of grid nodes to search!");
                 break;
             }
 
@@ -105,7 +108,37 @@ void BFS::RunPlanner() {
 
 void BFS::BuildPathFromQueue()
 {
-
-
     
+    if(search_queue>1)
+    {
+      // Start with last element in the search queue (Goal point)
+      int last_index = search_queue.size()-1;
+      OGMap::GridCell* current_cell = MapObj.GetCellbyIndex(search_queue[last_index][0],search_queue[last_index][1]);
+      std::vector<int> cell_coordinates;
+      cell_coordinates.push_back(current_cell->location[0]);
+      cell_coordinates.push_back(current_cell->location[1]);
+      feasible_path_coordinates.push_back(cell_coordinates);
+      
+      // Mark cell to be on final path for visualisation
+      current_cell->isOnPlannerPath = true;
+
+      while(current_cell->parent_index[0]!=-1)
+      {
+        cell_coordinates.clear();
+        current_cell = MapObj.GetCellbyIndex(current_cell->parent_index[0] ,current_cell->parent_index[1]);
+        
+        // Add it to final path
+        cell_coordinates.push_back(current_cell->location[0]);
+        cell_coordinates.push_back(current_cell->location[1]);
+        feasible_path_coordinates.push_back(cell_coordinates);
+
+        // Mark cell to be on final path for visualisation
+         current_cell->isOnPlannerPath = true;
+
+      }
+
+    }
+
+    logger_->info("Number of points on planned path:{}",feasible_path_coordinates.size());
+
 }
