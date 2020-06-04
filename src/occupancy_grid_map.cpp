@@ -7,10 +7,19 @@ OGMap::OGMap(float resolution, int height_x, int length_y, float start[],
     : nh_ptr_(nh_ptr), is_goal_active(false) {
   logger_ = spdlog::get("graph_planning")->clone("occupancy_grid_map_node");
 
-  map_publisher =
-      nh_ptr_->advertise<nav_msgs::GridCells>("/graph_planning_map", 1);
-  goal_publisher =
-      nh_ptr_->advertise<nav_msgs::GridCells>("/graph_planning_goal", 1);
+  free_cell_pub =
+      nh_ptr_->advertise<nav_msgs::GridCells>("/graph_planning/free_cells", 1);
+  obstacle_cell_pub = nh_ptr_->advertise<nav_msgs::GridCells>(
+      "/graph_planning/obstacle_cells", 1);
+  frontier_cell_pub = nh_ptr_->advertise<nav_msgs::GridCells>(
+      "/graph_planning/frontier_cells", 1);
+  path_cell_pub =
+      nh_ptr_->advertise<nav_msgs::GridCells>("/graph_planning/path_cells", 1);
+  explored_cell_pub = nh_ptr_->advertise<nav_msgs::GridCells>(
+      "/graph_planning/explored_cells", 1);
+  goal_cell_pub =
+      nh_ptr_->advertise<nav_msgs::GridCells>("/graph_planning/goal_cell", 1);
+
   goal_sub = nh_ptr_->subscribe("/move_base_simple/goal", 1,
                                 &OGMap::GoalCallback, this);
 
@@ -73,11 +82,26 @@ OGMap::OGMap(float resolution, int height_x, int length_y, float start[],
 
 void OGMap::visualise_map() {
 
-  nav_msgs::GridCells grid_cells = nav_msgs::GridCells();
-  grid_cells.cell_width = 1.0f;
-  grid_cells.cell_height = 1.0f;
-  grid_cells.header.stamp = ros::Time::now();
-  grid_cells.header.frame_id = "map";
+  nav_msgs::GridCells free_cells = nav_msgs::GridCells();
+  nav_msgs::GridCells obstacle_cells = nav_msgs::GridCells();
+  nav_msgs::GridCells goal_cell = nav_msgs::GridCells();
+  nav_msgs::GridCells frontier_cells = nav_msgs::GridCells();
+  nav_msgs::GridCells explored_cells = nav_msgs::GridCells();
+  nav_msgs::GridCells path_cells = nav_msgs::GridCells();
+
+  free_cells.cell_width = obstacle_cells.cell_width = goal_cell.cell_width =
+      frontier_cells.cell_width = explored_cells.cell_width =
+          path_cells.cell_width = 1.0f;
+  free_cells.cell_height = obstacle_cells.cell_height = goal_cell.cell_height =
+      frontier_cells.cell_height = explored_cells.cell_height =
+          path_cells.cell_height = 1.0f;
+  free_cells.header.stamp = obstacle_cells.header.stamp =
+      goal_cell.header.stamp = frontier_cells.header.stamp =
+          explored_cells.header.stamp = path_cells.header.stamp =
+              ros::Time::now();
+  free_cells.header.frame_id = obstacle_cells.header.frame_id =
+      goal_cell.header.frame_id = frontier_cells.header.frame_id =
+          explored_cells.header.frame_id = path_cells.header.frame_id = "map";
 
   geometry_msgs::Point grid_cell_point = geometry_msgs::Point();
 
@@ -86,11 +110,29 @@ void OGMap::visualise_map() {
       grid_cell_point.x = Map[i][j].location[0];
       grid_cell_point.y = Map[i][j].location[1];
       grid_cell_point.z = 0.0f;
-      grid_cells.cells.push_back(grid_cell_point);
+
+      if (Map[i][j].isOnPlannerPath) {
+        path_cells.cells.push_back(grid_cell_point);
+      } else if (Map[i][j].isFrontier) {
+        frontier_cells.cells.push_back(grid_cell_point);
+      } else if (Map[i][j].isGoal) {
+        goal_cell.cells.push_back(grid_cell_point);
+      } else if (Map[i][j].isExplored) {
+        explored_cells.cells.push_back(grid_cell_point);
+      } else if (Map[i][j].value == OCCUPIED) {
+        obstacle_cells.cells.push_back(grid_cell_point);
+      } else {
+        free_cells.cells.push_back(grid_cell_point);
+      }
     }
   }
 
-  map_publisher.publish(grid_cells);
+  free_cell_pub.publish(free_cells);
+  obstacle_cell_pub.publish(obstacle_cells);
+  frontier_cell_pub.publish(frontier_cells);
+  goal_cell_pub.publish(goal_cell);
+  explored_cell_pub.publish(explored_cells);
+  path_cell_pub.publish(path_cells);
   logger_->debug("Published new map state!");
 }
 
@@ -108,18 +150,7 @@ void OGMap::GoalCallback(const geometry_msgs::PoseStamped &goal_msg) {
       GoalCell[1] = temp_cell->location[1];
 
       // Visualise Goal on map
-      nav_msgs::GridCells grid_cells = nav_msgs::GridCells();
-      grid_cells.cell_width = 1;
-      grid_cells.cell_height = 1;
-      grid_cells.header.stamp = ros::Time::now();
-      grid_cells.header.frame_id = "map";
-
-      geometry_msgs::Point grid_cell_point = geometry_msgs::Point();
-      grid_cell_point.x = temp_cell->location[0];
-      grid_cell_point.y = temp_cell->location[1];
-      grid_cell_point.z = 0.0f;
-      grid_cells.cells.push_back(grid_cell_point);
-      goal_publisher.publish(grid_cells);
+      visualise_map();
       logger_->info("Got new goal!");
 
     } else {

@@ -42,7 +42,7 @@ void BFS::RunPlanner() {
       // End of queue marker
       MapObj.Map[search_queue[queue_it][0]][search_queue[queue_it][1]].parent_index[0] = -1;
       MapObj.Map[search_queue[queue_it][0]][search_queue[queue_it][1]].parent_index[1] = -1;
-      /*******/
+      MapObj.visualise_map();
       while(1){
 
           // Remove from frontier add to explored
@@ -50,7 +50,7 @@ void BFS::RunPlanner() {
            current_cell->isFrontier = false;
            current_cell->isExplored = true;
 
-            /********/
+            MapObj.visualise_map();
 
            for(int i=0;i<motion_model.size();i++)
            {
@@ -78,7 +78,7 @@ void BFS::RunPlanner() {
                              break;
                         }
 
-                    /********/
+                    MapObj.visualise_map();
                 }
 
            }
@@ -86,7 +86,7 @@ void BFS::RunPlanner() {
               if(current_cell->isGoal)
             {
                 BuildPathFromQueue();
-                /***********/
+                MapObj.visualise_map();
                 break;
             }
 
@@ -109,7 +109,7 @@ void BFS::RunPlanner() {
 void BFS::BuildPathFromQueue()
 {
     
-    if(search_queue>1)
+    if(search_queue.size()>1)
     {
       // Start with last element in the search queue (Goal point)
       int last_index = search_queue.size()-1;

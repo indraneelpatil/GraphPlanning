@@ -63,8 +63,14 @@ private:
 
   std::shared_ptr<spdlog::logger> logger_;
   std::shared_ptr<ros::NodeHandle> nh_ptr_;
-  ros::Publisher map_publisher;
-  ros::Publisher goal_publisher;
+  
+  ros::Publisher free_cell_pub;
+  ros::Publisher obstacle_cell_pub;
+  ros::Publisher frontier_cell_pub;
+  ros::Publisher explored_cell_pub;
+  ros::Publisher goal_cell_pub;
+  ros::Publisher path_cell_pub;
+
   ros::Subscriber goal_sub;
 };
 
