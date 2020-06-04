@@ -11,7 +11,7 @@ Global planning for robotics based on graph search technique
 + Breadth First Search Planner
     - [X] Write Motion Model
     - [X] Planning thread wait to receive goal
-    - [ ] Iterate until goal cell is found
+    - [X] Iterate until goal cell is found
     - [ ] Build final path
     - [ ] Visualise frontier, explored nodes and final path
     - [ ] Uranus
