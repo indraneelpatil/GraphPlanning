@@ -47,6 +47,7 @@ public:
   void addObstacle(int x, int y);
   void visualise_map();
   void reset_map();
+  void print_map_status();
 
   GridCell *GetCellbyIndex(int x, int y);
   GridCell *GetCellbyPose(float x, float y);
@@ -61,6 +62,9 @@ private:
   float Origin[2];
   int GridDim[2];
   GridCell border_cell;
+
+  int num_explored;
+  int num_frontier;
 
   std::shared_ptr<spdlog::logger> logger_;
   std::shared_ptr<ros::NodeHandle> nh_ptr_;

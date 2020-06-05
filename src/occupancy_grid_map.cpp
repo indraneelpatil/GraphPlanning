@@ -99,6 +99,11 @@ void OGMap::reset_map() {
   logger_->info("Map has been reset!");
 }
 
+void OGMap::print_map_status() {
+
+  logger_->info("======= Explored :{} ====== Frontier :{}",num_explored,num_frontier);
+}
+
 void OGMap::visualise_map() {
 
   nav_msgs::GridCells free_cells = nav_msgs::GridCells();
@@ -145,6 +150,9 @@ void OGMap::visualise_map() {
       }
     }
   }
+
+  num_explored = explored_cells.cells.size();
+  num_frontier = frontier_cells.cells.size();
 
   if(!free_cells.cells.empty())
     free_cell_pub.publish(free_cells);

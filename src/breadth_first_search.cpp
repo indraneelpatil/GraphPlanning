@@ -85,6 +85,7 @@ void BFS::RunPlanner() {
                 }
 
            }
+            MapObj.print_map_status();
 
               if(current_cell->isGoal)
             {
