@@ -17,5 +17,6 @@ Global planning for robotics based on graph search technique
     - [ ] Add progress indicator during planning and performance metrics
     - [ ] Clear Map function
     - [ ] Add obstacles
+    - [ ] Is diagonal exploration possible?
 
 Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
