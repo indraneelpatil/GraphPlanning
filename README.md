@@ -15,7 +15,7 @@ Global planning for robotics based on graph search technique
     - [X] Build final path
     - [X] Visualise frontier, explored nodes and final path
     - [ ] Add progress indicator during planning and performance metrics
-    - [ ] Neptune
+    - [ ] Clear Map function
     - [ ] Comet Haley
 
 Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
