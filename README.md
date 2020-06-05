@@ -14,9 +14,9 @@ Global planning for robotics based on graph search technique
     - [X] Iterate until goal cell is found
     - [X] Build final path
     - [X] Visualise frontier, explored nodes and final path
-    - [ ] Add progress indicator during planning and performance metrics
-    - [ ] Clear Map function
+    - [X] Add progress indicator during planning and performance metrics
+    - [X] Clear Map function
     - [ ] Add obstacles
-    - [ ] Is diagonal exploration possible?
+    - [X] Is diagonal exploration possible?
 
 Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
