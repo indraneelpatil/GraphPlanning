@@ -82,6 +82,23 @@ OGMap::OGMap(float resolution, int height_x, int length_y, float start[],
   visualise_map();
 }
 
+void OGMap::reset_map() {
+
+  for(int i=0;i<GridDim[0]; i++) {
+    for (int j = 0;j<GridDim[1]; j++)
+    {
+      // Cell values stay the same
+      Map[i][j].isExplored = false;
+      Map[i][j].isFrontier = false;
+      Map[i][j].isOnPlannerPath = false;
+      Map[i][j].isGoal = false;
+      Map[i][j].parent_index[2] = {0};
+    }
+  }
+  visualise_map();
+  logger_->info("Map has been reset!");
+}
+
 void OGMap::visualise_map() {
 
   nav_msgs::GridCells free_cells = nav_msgs::GridCells();
@@ -152,6 +169,8 @@ void OGMap::GoalCallback(const geometry_msgs::PoseStamped &goal_msg) {
     GridCell *temp_cell =
         GetCellbyPose(goal_msg.pose.position.x, goal_msg.pose.position.y);
     if (temp_cell->value == CellValue::FREE) {
+      // reset map
+      reset_map();
       temp_cell->isGoal = true;
       is_goal_active = true;
       GoalCell[0] = temp_cell->location[0];

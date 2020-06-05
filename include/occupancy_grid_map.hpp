@@ -46,6 +46,7 @@ public:
   void setStartOnGrid(int x, int y);
   void addObstacle(int x, int y);
   void visualise_map();
+  void reset_map();
 
   GridCell *GetCellbyIndex(int x, int y);
   GridCell *GetCellbyPose(float x, float y);
