@@ -31,6 +31,7 @@ OGMap::OGMap(float resolution, int height_x, int length_y, float start[],
   cell.value = free_value;
   cell.isExplored = false;
   cell.isFrontier = false;
+  cell.isOnPlannerPath = false;
   cell.isGoal = false;
 
   // Find origin of map (Centre of map is start point)
@@ -75,6 +76,7 @@ OGMap::OGMap(float resolution, int height_x, int length_y, float start[],
   // Define a border cell
   border_cell.value = CellValue::OCCUPIED;
   border_cell.isExplored = true;
+  border_cell.isGoal = false;
 
   usleep(1000000);
   visualise_map();
@@ -127,12 +129,18 @@ void OGMap::visualise_map() {
     }
   }
 
-  free_cell_pub.publish(free_cells);
-  obstacle_cell_pub.publish(obstacle_cells);
-  frontier_cell_pub.publish(frontier_cells);
+  if(!free_cells.cells.empty())
+    free_cell_pub.publish(free_cells);
+  if(!obstacle_cells.cells.empty())
+    obstacle_cell_pub.publish(obstacle_cells);
+  if(!frontier_cells.cells.empty())
+    frontier_cell_pub.publish(frontier_cells);
+  //if(!goal_cell.cells.empty())
   goal_cell_pub.publish(goal_cell);
-  explored_cell_pub.publish(explored_cells);
-  path_cell_pub.publish(path_cells);
+  if(!explored_cells.cells.empty())
+    explored_cell_pub.publish(explored_cells);
+  if(!path_cells.cells.empty())
+    path_cell_pub.publish(path_cells);
   logger_->debug("Published new map state!");
 }
 

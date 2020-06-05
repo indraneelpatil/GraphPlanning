@@ -5,8 +5,10 @@ BFS::BFS(OGMap &OGMap) : MapObj(OGMap), planner_alive(true) {
   logger_ = spdlog::get("graph_planning")->clone("bfs_node");
 
   // Create Motion Model
-  motion_model = {{1, 0}, {0, 1},  {-1, 0},  {0, -1},
+  motion_model = {{1, 0}, {0, 1},  {-1, 0},  {0, -1}, 
                   {1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
+
+  //motion_model = {{1, 0}, {0, 1},  {-1, 0},  {0, -1}};
 
   // Start Planner
   planner_thread_ = std::thread(&BFS::RunPlanner, this);
@@ -43,7 +45,7 @@ void BFS::RunPlanner() {
       MapObj.Map[search_queue[queue_it][0]][search_queue[queue_it][1]].parent_index[0] = -1;
       MapObj.Map[search_queue[queue_it][0]][search_queue[queue_it][1]].parent_index[1] = -1;
       MapObj.visualise_map();
-      while(1){
+      while(planner_alive){
 
           // Remove from frontier add to explored
            OGMap::GridCell* current_cell = MapObj.GetCellbyIndex(search_queue[queue_it][0],search_queue[queue_it][1]);
@@ -56,7 +58,7 @@ void BFS::RunPlanner() {
            {
                // Check if point is not explored and free
                 current_cell = MapObj.GetCellbyIndex(search_queue[queue_it][0]+motion_model[i][0],search_queue[queue_it][1]+motion_model[i][1]);
-                if(!current_cell->isExplored && current_cell->value==OGMap::FREE)
+                if(!current_cell->isExplored && !current_cell->isFrontier && current_cell->value==OGMap::FREE)
                 {
                     // Add to frontier
                     current_cell->isFrontier = true;
@@ -79,6 +81,7 @@ void BFS::RunPlanner() {
                         }
 
                     MapObj.visualise_map();
+                    std::this_thread::sleep_for(std::chrono::milliseconds(200));
                 }
 
            }
@@ -87,6 +90,7 @@ void BFS::RunPlanner() {
             {
                 BuildPathFromQueue();
                 MapObj.visualise_map();
+                std::this_thread::sleep_for(std::chrono::milliseconds(200));
                 break;
             }
 
