@@ -13,9 +13,10 @@ Global planning for robotics based on graph search technique
     - [X] Planning thread wait to receive goal
     - [X] Iterate until goal cell is found
     - [X] Build final path
-    - [ ] Visualise frontier, explored nodes and final path
-    - [ ] Uranus
-    - [ ] Neptune
-    - [ ] Comet Haley
+    - [X] Visualise frontier, explored nodes and final path
+    - [ ] Add progress indicator during planning and performance metrics
+    - [ ] Clear Map function
+    - [ ] Add obstacles
+    - [ ] Is diagonal exploration possible?
 
 Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
