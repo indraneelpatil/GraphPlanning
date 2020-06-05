@@ -101,7 +101,7 @@ void OGMap::reset_map() {
 
 void OGMap::print_map_status() {
 
-  logger_->info("======= Explored :{} ====== Frontier :{}",num_explored,num_frontier);
+  logger_->info("Explored :{} ===== Frontier :{} ===== Total :{}",num_explored,num_frontier,GridDim[0]*GridDim[1]);
 }
 
 void OGMap::visualise_map() {
