@@ -8,7 +8,7 @@ DFS::DFS(OGMap &OGMap) : MapObj(OGMap), planner_alive(true),goal_reached(false) 
   motion_model = {{1, 0}, {0, 1},  {-1, 0},  {0, -1}, 
                   {1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
 
-  motion_model = {{1, 0}, {0, 1},  {-1, 0},  {0, -1}};
+  //motion_model = {{1, 0}, {0, 1},  {-1, 0},  {0, -1}};
 
   // Start Planner
   planner_thread_ = std::thread(&DFS::RunPlanner, this);

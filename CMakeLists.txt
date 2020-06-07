@@ -40,14 +40,15 @@ catkin_package(
         CATKIN_DEPENDS roscpp tf geometry_msgs rosbag nav_msgs gor_map_server realtime_tools
 )
 
-add_library(occupancy_grid_map SHARED
+add_library(maps SHARED
         src/occupancy_grid_map.cpp
+        src/cost_map.cpp
 )
 
 
-set_target_properties(occupancy_grid_map PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(maps PROPERTIES LINKER_LANGUAGE CXX)
 
-target_link_libraries(occupancy_grid_map
+target_link_libraries(maps
                 ${CMAKE_THREAD_LIBS_INIT}
                 spdlog
                 ${catkin_LIBRARIES}
@@ -69,7 +70,7 @@ target_link_libraries(planners
 
 add_executable(planner_main src/planner_main.cpp)
 target_link_libraries(planner_main 
-                        occupancy_grid_map
+                        maps
                         planners
                         #lift_up_tree_nodes
                         boost_system
@@ -79,3 +80,16 @@ target_link_libraries(planner_main
                 ${catkin_LIBRARIES}
                 )
 set_target_properties(planner_main PROPERTIES LINKER_LANGUAGE CXX)
+
+add_executable(planner_main_cost src/planner_main_cost.cpp)
+target_link_libraries(planner_main_cost
+                        maps
+                        planners
+                        #lift_up_tree_nodes
+                        boost_system
+                        spdlog
+                # lift_controller
+                ${CMAKE_THREAD_LIBS_INIT}
+                ${catkin_LIBRARIES}
+                )
+set_target_properties(planner_main_cost PROPERTIES LINKER_LANGUAGE CXX)

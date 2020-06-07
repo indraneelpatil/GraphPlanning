@@ -12,7 +12,9 @@
 #include <nav_msgs/GridCells.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/PoseStamped.h>
+//#include "cost_map.hpp"
 
+class CostMap;  // forward declaration
 class OGMap {
 
 public:
@@ -21,6 +23,7 @@ public:
 
   ~OGMap(){};
 
+  friend class CostMap;
   typedef enum CellValue_ {
 
     UNKNOWN = -1,
