@@ -55,6 +55,7 @@ target_link_libraries(occupancy_grid_map
 
 add_library(planners SHARED
 src/breadth_first_search.cpp
+src/depth_first_search.cpp
 )
 
 
@@ -69,6 +70,7 @@ target_link_libraries(planners
 add_executable(planner_main src/planner_main.cpp)
 target_link_libraries(planner_main 
                         occupancy_grid_map
+                        planners
                         #lift_up_tree_nodes
                         boost_system
                         spdlog

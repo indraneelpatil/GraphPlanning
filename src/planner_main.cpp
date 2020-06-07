@@ -10,6 +10,7 @@
 
 #include "occupancy_grid_map.hpp"
 #include "breadth_first_search.cpp"
+#include "depth_first_search.hpp"
 
 #include <chrono>
 #include <csignal>
@@ -61,18 +62,23 @@ int main(int argc, char **argv) {
   logger->info("Occupancy Grid map created!");
 
   // Add obstacles 
-  grid_map.Map[2][3].value = OGMap::OCCUPIED;
-  grid_map.Map[3][4].value = OGMap::OCCUPIED;
-  grid_map.Map[4][5].value = OGMap::OCCUPIED;
-  grid_map.Map[5][6].value = OGMap::OCCUPIED;
-  grid_map.Map[6][8].value = OGMap::OCCUPIED;
-  
-   logger->info("Obstacles added to the Map!");
-   usleep(1000000);
-   grid_map.visualise_map();
+  bool add_obstacles = false;
+  if(add_obstacles)
+  {
+    grid_map.Map[2][3].value = OGMap::OCCUPIED;
+    grid_map.Map[3][4].value = OGMap::OCCUPIED;
+    grid_map.Map[4][5].value = OGMap::OCCUPIED;
+    grid_map.Map[5][6].value = OGMap::OCCUPIED;
+    grid_map.Map[6][8].value = OGMap::OCCUPIED;
+    
+    logger->info("Obstacles added to the Map!");
+    usleep(1000000);
+    grid_map.visualise_map();
+  }
 
   // Create Planner
-  BFS planner(grid_map);
+  //BFS planner(grid_map);
+   DFS planner(grid_map);
 
   //ros::AsyncSpinner spinner(1);
   //spinner.start();
