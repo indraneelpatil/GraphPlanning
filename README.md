@@ -11,12 +11,15 @@ Global planning for robotics based on graph search technique
 + Breadth First Search Planner
     - [X] Write Motion Model
     - [X] Planning thread wait to receive goal
-    - [X] Iterate until goal cell is found
+    - [X] Iterate queue until goal cell is found
     - [X] Build final path
     - [X] Visualise frontier, explored nodes and final path
     - [X] Add progress indicator during planning and performance metrics
     - [X] Clear Map function
-    - [ ] Add obstacles
+    - [X] Add obstacles
     - [X] Is diagonal exploration possible?
+ + Depth First Search Planner
+    - [ ] Create stack data structure
+    - [ ] Adapt breadth first search to depth first search
 
 Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
