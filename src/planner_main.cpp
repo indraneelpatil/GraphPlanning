@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
   logger->info("Occupancy Grid map created!");
 
   // Add obstacles 
-  bool add_obstacles = false;
+  bool add_obstacles = true;
   if(add_obstacles)
   {
     grid_map.Map[2][3].value = OGMap::OCCUPIED;

@@ -56,11 +56,11 @@ public:
   bool is_goal_active;
   int GoalCell[2];
   int start_index[2];
+   int GridDim[2];
 
 private:
   
   float Origin[2];
-  int GridDim[2];
   GridCell border_cell;
 
   int num_explored;

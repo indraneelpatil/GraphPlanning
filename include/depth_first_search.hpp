@@ -33,6 +33,7 @@ private:
   OGMap &MapObj;
   std::condition_variable goal_cv;
   std::mutex goal_mutex_;
+  bool goal_reached;
 
   bool planner_alive;
   std::thread planner_thread_;

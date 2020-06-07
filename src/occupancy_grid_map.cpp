@@ -158,12 +158,12 @@ void OGMap::visualise_map() {
     free_cell_pub.publish(free_cells);
   if(!obstacle_cells.cells.empty())
     obstacle_cell_pub.publish(obstacle_cells);
-  if(!frontier_cells.cells.empty())
-    frontier_cell_pub.publish(frontier_cells);
+  //if(!frontier_cells.cells.empty())
+  frontier_cell_pub.publish(frontier_cells);
   //if(!goal_cell.cells.empty())
   goal_cell_pub.publish(goal_cell);
-  if(!explored_cells.cells.empty())
-    explored_cell_pub.publish(explored_cells);
+  //if(!explored_cells.cells.empty())
+  explored_cell_pub.publish(explored_cells);
   if(!path_cells.cells.empty())
     path_cell_pub.publish(path_cells);
   logger_->debug("Published new map state!");

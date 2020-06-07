@@ -1,6 +1,6 @@
 #include "depth_first_search.hpp"
 
-DFS::DFS(OGMap &OGMap) : MapObj(OGMap), planner_alive(true) {
+DFS::DFS(OGMap &OGMap) : MapObj(OGMap), planner_alive(true),goal_reached(false) {
 
   logger_ = spdlog::get("graph_planning")->clone("dfs_node");
 
@@ -38,6 +38,9 @@ void DFS::RunPlanner() {
       current_cell_index.push_back(MapObj.start_index[1]);
       search_stack.push(current_cell_index);
 
+      // Add start to frontier
+      MapObj.Map[current_cell_index[0]][current_cell_index[1]].isFrontier = true;
+
       // End of queue marker
       MapObj.Map[current_cell_index[0]][current_cell_index[1]].parent_index[0] = -1;
       MapObj.Map[current_cell_index[0]][current_cell_index[1]].parent_index[1] = -1;
@@ -47,65 +50,61 @@ void DFS::RunPlanner() {
           // Get top element from stack
           current_cell_index.clear();
           current_cell_index = search_stack.top();
+          search_stack.pop();
 
-          // Add to frontier
+          // Add to Explored
            OGMap::GridCell* current_cell = MapObj.GetCellbyIndex(current_cell_index[0],current_cell_index[1]);
-           current_cell->isFrontier = true;
+           current_cell->isFrontier = false;
+           current_cell->isExplored = true;
 
             MapObj.visualise_map();
+
+            // Save the parent indices
+            std::vector<int> parent_cell_index;
+            parent_cell_index.clear();
+            parent_cell_index.push_back(current_cell_index[0]);
+            parent_cell_index.push_back(current_cell_index[1]);
            
-           int i;
-           for(i=0;i<motion_model.size();i++)
+           for(int i=0;i<motion_model.size();i++)
            {
                // Check if point is not explored and free
-                current_cell = MapObj.GetCellbyIndex(current_cell_index[0]+motion_model[i][0],current_cell_index[1]+motion_model[i][1]);
+                current_cell = MapObj.GetCellbyIndex(parent_cell_index[0]+motion_model[i][0],parent_cell_index[1]+motion_model[i][1]);
                 if(!current_cell->isExplored && !current_cell->isFrontier && current_cell->value==OGMap::FREE)
                 {
                     // Add to frontier
                     current_cell->isFrontier = true;
 
-                    // Add to search stack
-                    current_cell_index.clear();
-                    current_cell_index.push_back(current_cell_index[0]+motion_model[i][0]);
-                    current_cell_index.push_back(current_cell_index[1]+motion_model[i][1]);
-                    search_stack.push(current_cell_index);
-
                     //Update parent cell of current cell
-                    current_cell->parent_index[0] = current_cell_index[0];
-                    current_cell->parent_index[1] = current_cell_index[1];
+                    current_cell->parent_index[0] = parent_cell_index[0];
+                    current_cell->parent_index[1] = parent_cell_index[1];
+
+                    // Add to search stack
+                    current_cell_index[0]= (parent_cell_index[0]+motion_model[i][0]);
+                    current_cell_index[1] = (parent_cell_index[1]+motion_model[i][1]);
+                    search_stack.push(current_cell_index);
 
                     // Check if goal
                     if(current_cell->isGoal)
                         {
                              logger_->info("Goal Reached!");
+                             goal_reached = true;
                              break;
                         }
 
                     MapObj.visualise_map();
                     std::this_thread::sleep_for(std::chrono::milliseconds(200));
-                    // Go back to top of stack
-                    break;
                 }
 
            }
             MapObj.print_map_status();
 
-              if(current_cell->isGoal)
+              if(goal_reached)
             {
                 BuildPath();
+                std::this_thread::sleep_for(std::chrono::milliseconds(500));
                 MapObj.visualise_map();
-                std::this_thread::sleep_for(std::chrono::milliseconds(200));
                 break;
             }
-            // If we have finished exploring current cell, add it to explored and pop it from stack
-            if(!current_cell->isGoal&&i==motion_model.size())
-            {
-                search_stack.pop();
-                current_cell->isExplored = true;
-                 current_cell->isFrontier = false;
-                MapObj.visualise_map();
-            }
-
       }
 
       if(search_stack.empty())
@@ -115,6 +114,7 @@ void DFS::RunPlanner() {
       
 
       MapObj.is_goal_active = false;
+      goal_reached = false;
     }
   }
 }
@@ -136,7 +136,7 @@ void DFS::BuildPath()
       // Mark cell to be on final path for visualisation
       current_cell->isOnPlannerPath = true;
 
-      while(current_cell->parent_index[0]!=-1)
+      while(current_cell->parent_index[0]!=-1 && feasible_path_coordinates.size()<MapObj.GridDim[0]*MapObj.GridDim[1])
       {
         cell_coordinates.clear();
         current_cell = MapObj.GetCellbyIndex(current_cell->parent_index[0] ,current_cell->parent_index[1]);
@@ -148,7 +148,6 @@ void DFS::BuildPath()
 
         // Mark cell to be on final path for visualisation
          current_cell->isOnPlannerPath = true;
-          logger_->info("{}",current_cell->parent_index[0]);
       }
 
     }
