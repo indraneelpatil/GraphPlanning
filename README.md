@@ -21,5 +21,10 @@ Global planning for robotics based on graph search technique
  + Depth First Search Planner
     - [X] Create stack data structure
     - [X] Adapt breadth first search to depth first search
+ + 2D Cost Map
+    - [ ] CostMap class as derived class of OGMap class
+    - [ ] Initialise all costs to default values
+    - [ ] Convert OG Map obstacles to Cost Map obstacles
+    - [ ] Visualise Cost Map using marker array
 
 Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
