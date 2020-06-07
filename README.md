@@ -19,7 +19,7 @@ Global planning for robotics based on graph search technique
     - [X] Add obstacles
     - [X] Is diagonal exploration possible?
  + Depth First Search Planner
-  - [] Create stack data structure
-  - [] Adapt breadth first search to depth first search
+    - [ ] Create stack data structure
+    - [ ] Adapt breadth first search to depth first search
 
 Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
