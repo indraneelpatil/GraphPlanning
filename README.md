@@ -26,5 +26,7 @@ Global planning for robotics based on graph search technique
     - [ ] Initialise all costs to default values
     - [ ] Convert OG Map obstacles to Cost Map obstacles
     - [ ] Visualise Cost Map using marker array
+    - [ ] what should be default cost value of cost map cells
+    
 
 Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
