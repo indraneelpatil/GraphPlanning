@@ -24,8 +24,8 @@ Global planning for robotics based on graph search technique
  + 2D Cost Map
     - [X] CostMap class as derived class of OGMap class
     - [X] Initialise all costs to default values
-    - [ ] Convert OG Map obstacles to Cost Map obstacles
-    - [ ] Visualise Cost Map using marker array
+    - [ ] Inflate OG Map obstacles to Cost Map obstacles
+    - [X] Visualise Cost Map using marker array
     - [ ] what should be default cost value of cost map cells
     
 
