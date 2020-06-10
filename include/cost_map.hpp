@@ -8,6 +8,10 @@
 #include <vector>
 
 #include <ros/ros.h>
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
+#include <geometry_msgs/Point.h>
+#include <std_msgs/ColorRGBA.h>
 
 #include "occupancy_grid_map.hpp"
 
@@ -33,9 +37,12 @@ public:
 
   std::vector<std::vector<MapCell>> cost_map;
 
+  void view_costmap();
+
 private:
   float inflation_radius;
   unsigned char default_value = FREE_SPACE;
   std::shared_ptr<spdlog::logger> logger;
+  ros::Publisher cost_map_pub;
 };
 #endif
