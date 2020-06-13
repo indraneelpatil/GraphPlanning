@@ -50,10 +50,6 @@ void CostMap::view_costmap()
   map_cell.scale.z = 0.1f;
 
   std_msgs::ColorRGBA color = std_msgs::ColorRGBA();
-  color.r = 255;
-  color.g = 255;
-  color.b = 255;
-  color.a = 1;
   int32_t id = 0;
   
   for (int i = 0; i < GridDim[0]; i++) {
@@ -62,6 +58,11 @@ void CostMap::view_costmap()
       map_cell.pose.position.x =  cost_map[i][j].OGCell.location[0];
       map_cell.pose.position.y = cost_map[i][j].OGCell.location[1];
       map_cell.pose.position.z = 0.0;
+      uint8_t clr = map_value(cost_map[i][j].cost,50,254,0,254);
+      color.r = 254-clr;
+      color.g = 254-clr;
+      color.b = 254-clr;
+      color.a = 1;
       map_cell.color =color;
       map_marker.markers.push_back(map_cell);
       id++;
@@ -71,4 +72,34 @@ void CostMap::view_costmap()
   cost_map_pub.publish(map_marker);
   logger->info("Published new cost map state");
 
+}
+
+uint8_t CostMap::map_value(uint8_t value,uint8_t s1,uint8_t e1,uint8_t s2,uint8_t e2) // 50,254, 0,254
+{
+  return int(float(s2) + (e2-s2)*(float(value-s1)/float(e1-s1))); //254*(150/204)
+}
+
+void CostMap::update_costvalues()
+{
+  // Copy obstacles from OGMap to CostMap
+  for (int i = 0; i < GridDim[0]; i++) {
+    for (int j = 0; j < GridDim[1]; j++) {
+      cost_map[i][j].OGCell = Map[i][j];
+    }
+  }
+
+  for (int i = 0; i < GridDim[0]; i++) {
+    for (int j = 0; j < GridDim[1]; j++) {
+
+      // Look for obstacle cells
+      if(cost_map[i][j].OGCell.value==OGMap::OCCUPIED)
+      {
+        cost_map[i][j].cost = LETHAL_OBSTACLE;
+        logger->info("Obstacle cell found");
+        //Inflate surrounding cost values
+      }
+    }
+  }
+
+  view_costmap();
 }

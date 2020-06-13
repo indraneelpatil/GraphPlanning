@@ -15,6 +15,8 @@
 
 #include "occupancy_grid_map.hpp"
 
+#define COST_FACTOR 0.8
+
 class CostMap : public OGMap {
 
 public:
@@ -27,6 +29,11 @@ public:
   static const unsigned char LETHAL_OBSTACLE = 254;
   static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
   static const unsigned char FREE_SPACE = 0;
+  static const unsigned char COST_NEUTRAL = 50;
+
+  /** navfn cost convention
+   * cell value = cost*cost_factor + cost_neutral 
+   */
 
   typedef struct MapCell_ {
 
@@ -38,10 +45,12 @@ public:
   std::vector<std::vector<MapCell>> cost_map;
 
   void view_costmap();
+  uint8_t map_value(uint8_t value,uint8_t s1,uint8_t e1,uint8_t s2,uint8_t e2);
+  void update_costvalues();
 
 private:
   float inflation_radius;
-  unsigned char default_value = FREE_SPACE;
+  unsigned char default_value = COST_NEUTRAL;
   std::shared_ptr<spdlog::logger> logger;
   ros::Publisher cost_map_pub;
 };
