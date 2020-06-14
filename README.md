@@ -28,9 +28,9 @@ Global planning for robotics based on graph search technique
     - [X] Visualise Cost Map using marker array
     - [X] what should be default cost value of cost map cells
  + Dijkstra's Planner
-    - [X] Adapt search queue to priority queue
-    - [X] track movement costs
-    - [X] Visualise the frontier,explored nodes and final path
+    - [ ] Adapt search queue to priority queue
+    - [ ] track movement costs
+    - [ ] Visualise the frontier,explored nodes and final path
     
 
 Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
