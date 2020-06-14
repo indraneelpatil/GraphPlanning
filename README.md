@@ -31,6 +31,8 @@ Global planning for robotics based on graph search technique
     - [ ] Adapt search queue to priority queue
     - [ ] track movement costs
     - [ ] Visualise the frontier,explored nodes and final path
+    - [ ] Introduce movement cost variable
+    
     
 
 Edit the document or wiki page and use the - [ ] and - [x] syntax to update your task list.
