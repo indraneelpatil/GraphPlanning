@@ -6,6 +6,7 @@
 #include <iostream>
 #include <spdlog/spdlog.h>
 #include <vector>
+#include <algorithm>
 
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
@@ -37,7 +38,7 @@ public:
 
   typedef struct MapCell_ {
 
-    GridCell OGCell;
+    //GridCell OGCell;
     unsigned char cost;
 
   } MapCell;
@@ -47,11 +48,15 @@ public:
   void view_costmap();
   uint8_t map_value(uint8_t value,uint8_t s1,uint8_t e1,uint8_t s2,uint8_t e2);
   void update_costvalues();
+  void inflate_cell(int cell_ind[2]);
 
 private:
   float inflation_radius;
   unsigned char default_value = COST_NEUTRAL;
   std::shared_ptr<spdlog::logger> logger;
   ros::Publisher cost_map_pub;
+  std::vector<std::vector<int>> inflation_queue;
+  std::vector<std::vector<int>> motion_model; //for BFS
+  float cost_scaling_factor;
 };
 #endif

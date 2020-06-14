@@ -93,6 +93,8 @@ void OGMap::reset_map() {
       Map[i][j].isOnPlannerPath = false;
       Map[i][j].isGoal = false;
       Map[i][j].parent_index[2] = {0};
+      Map[i][j].index[0] = i;
+      Map[i][j].index[1] = j;
     }
   }
   visualise_map();

@@ -66,14 +66,15 @@ int main(int argc, char **argv) {
   bool add_obstacles = true;
   if(add_obstacles)
   {
-    //cost_map.Map[2][3].value = OGMap::OCCUPIED;
-    //cost_map.Map[3][4].value = OGMap::OCCUPIED;
+    cost_map.Map[2][3].value = OGMap::OCCUPIED;
+    cost_map.Map[3][4].value = OGMap::OCCUPIED;
     cost_map.Map[4][5].value = OGMap::OCCUPIED;
     //cost_map.Map[5][6].value = OGMap::OCCUPIED;
     //cost_map.Map[6][8].value = OGMap::OCCUPIED;
     
     logger->info("Obstacles added to the Map!");
     usleep(1000000);
+    //cost_map.view_costmap();
     cost_map.update_costvalues();
   }
 
