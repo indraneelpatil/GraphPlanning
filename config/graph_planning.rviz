@@ -12,6 +12,8 @@ Panels:
         - /GridCells4
         - /GridCells5
         - /GridCells6
+        - /MarkerArray1
+        - /MarkerArray1/Status1
       Splitter Ratio: 0.5
     Tree Height: 416
   - Class: rviz/Selection
@@ -102,7 +104,7 @@ Visualization Manager:
       Value: true
     - Alpha: 1
       Class: rviz/GridCells
-      Color: 186; 189; 182
+      Color: 0; 0; 0
       Enabled: true
       Name: GridCells
       Topic: /graph_planning/obstacle_cells
@@ -113,6 +115,14 @@ Visualization Manager:
       Enabled: true
       Name: GridCells
       Topic: /graph_planning/frontier_cells
+      Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /graph_planning/cost_map
+      Name: MarkerArray
+      Namespaces:
+        "": true
+      Queue Size: 100
       Value: true
   Enabled: true
   Global Options:
@@ -142,7 +152,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 20.076997756958008
+      Distance: 19.12409210205078
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -157,10 +167,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9547969102859497
+      Pitch: 1.2647958993911743
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.000404357910156
+      Yaw: 2.850398063659668
     Saved:
       - Class: rviz/Orbit
         Distance: 27.14345932006836

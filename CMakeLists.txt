@@ -57,6 +57,7 @@ target_link_libraries(maps
 add_library(planners SHARED
 src/breadth_first_search.cpp
 src/depth_first_search.cpp
+src/dijkstras_planner.cpp
 )
 
 

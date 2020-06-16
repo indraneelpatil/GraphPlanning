@@ -12,6 +12,7 @@
 #include "occupancy_grid_map.hpp"
 #include "breadth_first_search.cpp"
 #include "depth_first_search.hpp"
+#include "dijkstras_planner.hpp"
 
 #include <chrono>
 #include <csignal>
@@ -81,6 +82,7 @@ int main(int argc, char **argv) {
   // Create Planner
   //BFS planner(grid_map);
   // DFS planner(grid_map);
+  Dijkstras planner(cost_map);
 
   //ros::AsyncSpinner spinner(1);
   //spinner.start();
