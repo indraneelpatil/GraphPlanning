@@ -29,9 +29,9 @@ Global planning for robotics based on graph search technique
     - [X] what should be default cost value of cost map cells
  + Dijkstra's Planner
     - [X] Adapt search queue to priority queue
-    - [ ] track movement costs
+    - [X] track movement costs
     - [ ] Visualise the frontier,explored nodes and final path
-    - [ ] Introduce movement cost variable
+    - [X] Introduce movement cost variable (No such variable needed ???)
     
     
 
