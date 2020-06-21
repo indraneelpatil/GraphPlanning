@@ -10,6 +10,11 @@ Dijkstras::Dijkstras(CostMap &CostMap) : MapObj(CostMap), planner_alive(true) {
 
   // Start Planner
   planner_thread_ = std::thread(&Dijkstras::RunPlanner, this);
+
+#if ASTAR_HEURISTIC
+  logger_->info("A* heuristic is enabled!");
+  heuristic_weight = 10.0f;
+#endif
 }
 
 Dijkstras::~Dijkstras() {
@@ -62,11 +67,19 @@ void Dijkstras::RunPlanner()
                         current_cell = MapObj.GetCellbyIndex(cc_pair.second.index[0]+motion_model[i][0],cc_pair.second.index[1]+motion_model[i][1]);
                         if(!current_cell->isExplored && current_cell->value==OGMap::FREE)
                         {
+#if ASTAR_HEURISTIC
+                            // cost = cost_so_far + cost_cell + heuristic value
+                            int new_cost =  cc_pair.first+ 
+                                                MapObj.cost_map[current_cell->index[0]][current_cell->index[1]].cost+
+                                                    heuristic(*current_cell);
+#else
+
+                            // cost = cost_so_far + cost_cell
+                            int new_cost = cc_pair.first+ MapObj.cost_map[current_cell->index[0]][current_cell->index[1]].cost;
+#endif
                             // Check if it is already in Frontier
                             if(current_cell->isFrontier)
                             {
-                                // cost = cost_so_far + cost_cell
-                                int new_cost = cc_pair.first+ MapObj.cost_map[current_cell->index[0]][current_cell->index[1]].cost;
                                 // Check current cost in priority queue
                                 if(CompareCost(new_cost,*current_cell))
                                 {
@@ -81,8 +94,6 @@ void Dijkstras::RunPlanner()
                                 // Add to frontier
                                 current_cell->isFrontier = true;
                                 
-                                // cost = cost_so_far + cost_cell
-                                int new_cost = cc_pair.first+ MapObj.cost_map[current_cell->index[0]][current_cell->index[1]].cost;
                                 // Add to priority queue
                                 std::pair<int,CostMap::GridCell> new_cc_pair = std::make_pair(new_cost,*current_cell);
                                 queue.push(new_cc_pair);
@@ -200,3 +211,14 @@ void Dijkstras::RetracePathFromGoal(int goal_index[2])
     logger_->info("Number of points on planned path:{}",feasible_path_coordinates.size());
 
 }
+
+
+#if ASTAR_HEURISTIC
+/** @brief : Manhattan distance heuristic */
+int Dijkstras::heuristic(OGMap::GridCell cell){
+
+    return (int)(heuristic_weight*
+                (std::fabs(MapObj.GoalCell[0]-cell.location[0])+
+                std::fabs(MapObj.GoalCell[1]-cell.location[1])));
+}
+#endif

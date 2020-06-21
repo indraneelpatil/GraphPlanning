@@ -11,6 +11,8 @@
 
 #include "cost_map.hpp"
 
+#define ASTAR_HEURISTIC false
+
 class Dijkstras {
 
 public:
@@ -18,7 +20,7 @@ public:
   ~Dijkstras();
 
   void RunPlanner();
-  bool CompareCost(int cost,OGMap::GridCell cell);
+  bool CompareCost(int cost, OGMap::GridCell cell);
   void RetracePathFromGoal(int goal_index[2]);
 
   /** @brief : Compare class for the priority queue */
@@ -33,6 +35,10 @@ public:
   };
 
   std::vector<std::vector<int>> feasible_path_coordinates;
+#if ASTAR_HEURISTIC
+  float heuristic_weight;
+  int heuristic(OGMap::GridCell cell);
+#endif
 
 private:
   std::vector<std::vector<int>> motion_model;
