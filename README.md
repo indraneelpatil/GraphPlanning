@@ -31,7 +31,8 @@ Global planning for robotics based on graph search technique
     - [X] Adapt search queue to priority queue
     - [X] track movement costs
     - [X] Visualise the frontier,explored nodes and final path
-    - [X] Introduce movement cost variable (No such variable needed ???)
+    - [X] Introduce movement cost variable (No such variable needed ??? -> taken care of by COST_NEUTRAL)
+    - [X] Trade off between path length and proximity to obstacles (COST_NEUTRAL vs cost_scaling_factor)
     
     
 
