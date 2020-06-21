@@ -36,9 +36,10 @@ Global planning for robotics based on graph search technique
  + Greedy Best First Search Planner
     - [ ] Priority Queue returns cells closest to the goal
  + A Star Planner
-    - [ ] Introduce the manhattan distance (from goal) heuristic
-    - [ ] Weight of the heuristic variable
-    - [ ] Implement A Star with a compile time macro switch in Dijkstras
+    - [X] Introduce the manhattan distance (from goal) heuristic
+    - [X] Weight of the heuristic variable (Optimality condition : heuristic <true distance)
+    - [X] heuristic_weight variable -> trade off between Dijkstras and Greedy Best first search
+    - [X] Implement A Star with a compile time macro switch in Dijkstras
     
     
 
