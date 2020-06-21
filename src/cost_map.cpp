@@ -61,7 +61,7 @@ void CostMap::view_costmap()
       map_cell.pose.position.x =  Map[i][j].location[0];
       map_cell.pose.position.y = Map[i][j].location[1];
       map_cell.pose.position.z = 0.0;
-      uint8_t clr = map_value(cost_map[i][j].cost,50,254,0,254);
+      uint8_t clr = map_value(cost_map[i][j].cost,COST_NEUTRAL,254,0,254);
       color.r = float(254 - clr)/254.0f;
       color.g = float(254 - clr)/254.0f;
       color.b = float(254 - clr)/254.0f;
@@ -132,7 +132,7 @@ void CostMap::inflate_cell(int cell_ind[2])
 
   //Mark start as a frontier
   Map[inflation_queue[queue_it][0]][inflation_queue[queue_it][1]].isFrontier = true;
-  visualise_map();
+  //visualise_map();
   while(queue_it<=inflation_queue.size()-1)
   {
     GridCell* current_cell = GetCellbyIndex(inflation_queue[queue_it][0],inflation_queue[queue_it][1]);
@@ -153,9 +153,10 @@ void CostMap::inflate_cell(int cell_ind[2])
                     // Calculate cost
                     float factor = exp(-1.0 * cost_scaling_factor * dist);
                     uint8_t cost = (unsigned char)((INSCRIBED_INFLATED_OBSTACLE - 1) * factor);
-                    // Assign cost
+                    // Assign cost only if inside inflation_radius
                     uint8_t current_cost = cost_map[current_cell->index[0]][current_cell->index[1]].cost;
-                    cost_map[current_cell->index[0]][current_cell->index[1]].cost = std::max(current_cost,cost);
+                    if(dist<inflation_radius)
+                      cost_map[current_cell->index[0]][current_cell->index[1]].cost = std::max(current_cost,cost);
    
                     // Add to frontier
                     current_cell->isFrontier = true;

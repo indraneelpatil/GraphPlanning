@@ -30,7 +30,7 @@ public:
   static const unsigned char LETHAL_OBSTACLE = 254;
   static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
   static const unsigned char FREE_SPACE = 0;
-  static const unsigned char COST_NEUTRAL = 50;
+  static const unsigned char COST_NEUTRAL = 20;
 
   /** navfn cost convention
    * cell value = cost*cost_factor + cost_neutral 
