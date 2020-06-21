@@ -41,6 +41,7 @@ void Dijkstras::RunPlanner()
             // End of queue marker
             current_cell->parent_index[0] = -1;
             current_cell->parent_index[1] = -1;
+            MapObj.view_costmap();
             MapObj.visualise_map();
             while(planner_alive&&!queue.empty()){
 
@@ -52,6 +53,7 @@ void Dijkstras::RunPlanner()
                 current_cell->isFrontier = false;
                 current_cell->isExplored = true;
 
+                MapObj.view_costmap();
                 MapObj.visualise_map();
 
                 for(int i=0;i<motion_model.size();i++)
@@ -97,6 +99,7 @@ void Dijkstras::RunPlanner()
                                     break;
                                 }
 
+                            MapObj.view_costmap();
                             MapObj.visualise_map();
                             std::this_thread::sleep_for(std::chrono::milliseconds(200));
                         }
@@ -107,8 +110,9 @@ void Dijkstras::RunPlanner()
                     if(current_cell->isGoal)
                     {
                         RetracePathFromGoal(current_cell->index);
-                        MapObj.visualise_map();
                         std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                        MapObj.view_costmap();
+                        MapObj.visualise_map();
                         break;
                     }
 

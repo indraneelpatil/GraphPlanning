@@ -90,8 +90,8 @@ void BFS::RunPlanner() {
               if(current_cell->isGoal)
             {
                 BuildPathFromQueue();
-                MapObj.visualise_map();
                 std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                MapObj.visualise_map();
                 break;
             }
 

@@ -66,6 +66,19 @@ void CostMap::view_costmap()
       color.g = float(254 - clr)/254.0f;
       color.b = float(254 - clr)/254.0f;
       color.a = 1;
+      // Check if cell is active in planner
+      if (Map[i][j].isOnPlannerPath) {
+        color.g = 0.0f;
+        color.b = 0.0f;
+      } else if (Map[i][j].isFrontier) {
+        color.r = 0.0f;
+        color.g = 0.0f;
+      } else if (Map[i][j].isGoal) {
+        color.g = 0.0f;
+      } else if (Map[i][j].isExplored) {
+        color.r = 0.0f;
+        color.b = 0.0f;
+      } 
       map_cell.color =color;
       map_marker.markers.push_back(map_cell);
       id++;
@@ -73,7 +86,7 @@ void CostMap::view_costmap()
   }
   
   cost_map_pub.publish(map_marker);
-  logger->info("Published new cost map state");
+  //logger->info("Published new cost map state");
 
 }
 
@@ -100,7 +113,7 @@ void CostMap::update_costvalues()
       }
     }
   }
-
+  reset_map();
   view_costmap();
 }
 
