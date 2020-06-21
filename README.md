@@ -41,7 +41,13 @@ Global planning for robotics based on graph search technique
     - [X] heuristic_weight variable -> trade off between Dijkstras and Greedy Best first search
     - [X] Implement A Star with a compile time macro switch in Dijkstras
     
+ 
+
+### Depth First Search vs Breadth First Search
+[![Watch the video](https://img.youtube.com/vi/NP1IigrCXcg/hqdefault.jpg)](https://www.youtube.com/watch?v=NP1IigrCXcg)  
+
+### A* Planner vs Dijkstras Planner
+[![Watch the video](https://img.youtube.com/vi/s5UPQj2Uy40/hqdefault.jpg)](https://www.youtube.com/watch?v=s5UPQj2Uy40)   
     
-[![Watch the video](https://img.youtube.com/vi/NP1IigrCXcg/hqdefault.jpg)](https://www.youtube.com/watch?v=NP1IigrCXcg)   
     
 
