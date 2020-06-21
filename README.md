@@ -31,7 +31,14 @@ Global planning for robotics based on graph search technique
     - [X] Adapt search queue to priority queue
     - [X] track movement costs
     - [X] Visualise the frontier,explored nodes and final path
-    - [X] Introduce movement cost variable (No such variable needed ???)
+    - [X] Introduce movement cost variable (No such variable needed ??? -> taken care of by COST_NEUTRAL)
+    - [X] Trade off between path length and proximity to obstacles (COST_NEUTRAL vs cost_scaling_factor)
+ + Greedy Best First Search Planner
+    - [ ] Priority Queue returns cells closest to the goal
+ + A Star Planner
+    - [ ] Introduce the manhattan distance (from goal) heuristic
+    - [ ] Weight of the heuristic variable
+    - [ ] Implement A Star with a compile time macro switch in Dijkstras
     
     
 
