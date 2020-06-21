@@ -42,6 +42,6 @@ Global planning for robotics based on graph search technique
     - [X] Implement A Star with a compile time macro switch in Dijkstras
     
     
-[![Watch the video](https://img.youtube.com/vi/NP1IigrCXcg/maxresdefault.jpg)](https://www.youtube.com/watch?v=NP1IigrCXcg)   
+[![Watch the video](https://img.youtube.com/vi/NP1IigrCXcg/hqdefault.jpg)](https://www.youtube.com/watch?v=NP1IigrCXcg)   
     
 
