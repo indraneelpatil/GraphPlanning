@@ -30,7 +30,7 @@ Global planning for robotics based on graph search technique
  + Dijkstra's Planner
     - [X] Adapt search queue to priority queue
     - [X] track movement costs
-    - [ ] Visualise the frontier,explored nodes and final path
+    - [X] Visualise the frontier,explored nodes and final path
     - [X] Introduce movement cost variable (No such variable needed ???)
     
     
