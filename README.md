@@ -34,7 +34,7 @@ Global planning for robotics based on graph search technique
     - [X] Introduce movement cost variable (No such variable needed ??? -> taken care of by COST_NEUTRAL)
     - [X] Trade off between path length and proximity to obstacles (COST_NEUTRAL vs cost_scaling_factor)
  + Greedy Best First Search Planner
-    - [X] TODO
+    - [ ] Priority Queue returns cells closest to the goal
  + A Star Planner
     - [ ] Introduce the manhattan distance (from goal) heuristic
     - [ ] Weight of the heuristic variable
