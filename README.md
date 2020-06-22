@@ -1,5 +1,5 @@
 # GraphPlanning
-Global planning for robotics based on graph search technique
+Global planning for robotics based on graph search algorithms
 
 ### TODO
 + Accepting a new goal in rviz
